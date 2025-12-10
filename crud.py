@@ -24,13 +24,11 @@ def create_author(db: Session, author: schemas.AuthorCreate):
 
 
 def get_book(db: Session, book_id: int):
-    return db.execute(select(Book).where(Book.id == book_id)).scalar_one_or_none()
+    return db.execute(select(Book).options(joinedload(Book.author)).where(Book.id == book_id)).scalar_one_or_none()
 
 
 def get_books(db: Session, skip: int = 0, limit: int = 10, author_id: int | None = None):
-    query = select(Book)
-    if author_id:
-        query = query.where(Book.author_id == author_id)
+    query = select(Book).where(Book.author_id == author_id)
     return db.execute(query.offset(skip).limit(limit)).scalars().all()
 
 

@@ -18,6 +18,9 @@ class Author(AuthorBase):
     books: list["Book"] = []
 
 
+
+
+
 class BookBase(BaseModel):
     title: str
     summary: str | None = None
@@ -31,12 +34,7 @@ class BookCreate(BookBase):
 class Book(BookBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    author_id: int
+    author: Author
 
 
-class BookInAuthor(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    title: str
